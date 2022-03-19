@@ -4,6 +4,24 @@
 import numpy as np
 
 
+def get_non_basic_ratios(Ahat,bHat):
+    # now we want to iterate through Ahat and bHat and pick the minimum ratios
+    # only take ratios of variables with Ahat_i values greater than 0
+    # pick smallest ratio to get variable that will become nonbasic.
+    ratios = []
+    for i in range(0, len(bHat)):
+        Aval = Ahat[i]
+        Bval = bHat[i]
+
+        # don't look at ratios with val less then or eqaul to 0, append to keep index
+        if (Aval <= 0):
+            ratios.append(10000000)
+            continue
+        ratios.append(Bval / Aval)
+
+    return ratios
+
+
 def Simplex(A, b, c):
     '''Takes input vars, computs corresponding values,
     then uses while loop to iterate until a basic optimal solution is reached.
@@ -66,19 +84,20 @@ def Simplex(A, b, c):
 
         Ahat = Binv @ A[:, indx]
 
+        ratios = get_non_basic_ratios(Ahat,bHat)
         # now we want to iterate through Ahat and bHat and pick the minimum ratios
         # only take ratios of variables with Ahat_i values greater than 0
         # pick smallest ratio to get variable that will become nonbasic.
-        ratios = []
-        for i in range(0, len(bHat)):
-            Aval = Ahat[i]
-            Bval = bHat[i]
-
-            # don't look at ratios with val less then or eqaul to 0, append to keep index
-            if (Aval <= 0):
-                ratios.append(10000000)
-                continue
-            ratios.append(Bval / Aval)
+        # ratios = []
+        # for i in range(0, len(bHat)):
+        #     Aval = Ahat[i]
+        #     Bval = bHat[i]
+        #
+        #     # don't look at ratios with val less then or eqaul to 0, append to keep index
+        #     if (Aval <= 0):
+        #         ratios.append(10000000)
+        #         continue
+        #     ratios.append(Bval / Aval)
 
         ratioMinIndx = np.argmin(ratios)
 
