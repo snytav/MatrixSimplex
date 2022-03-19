@@ -3,6 +3,21 @@
 # https://gist.github.com/snytav/b6d59126610325a0b74562d09a343f3d
 import numpy as np
 
+def init_simplex(A):
+    # sizes of basic and nonbasic vectors
+    basicSize = A.shape[0]  # number of constraints, m
+    nonbasicSize = A.shape[1] - basicSize  # n-m, number of variables
+
+    # global index tracker of variables of basic and nonbasic variables (objective)
+    # that is, index 0 corresponds with x_0, 1 with x_1 and so on.  So each index corresponds with a variable
+    cindx = [i for i in range(0, len(c))]
+
+    # basic variable coefficients
+    cbT = np.array(c[nonbasicSize:])
+
+    # nonbasic variable coefficients
+    cnT = np.array(c[:nonbasicSize])
+    return cbT,cnT,cindx,nonbasicSize
 
 def get_non_basic_ratios(Ahat,bHat):
     # now we want to iterate through Ahat and bHat and pick the minimum ratios
@@ -85,6 +100,7 @@ def core_simplex(cindx,nonbasicSize,A,cnT,cbT):
         # now repeat the loop
 
 
+
 def Simplex(A, b, c):
     '''Takes input vars, computs corresponding values,
     then uses while loop to iterate until a basic optimal solution is reached.
@@ -94,20 +110,20 @@ def Simplex(A, b, c):
     bHat is final solution values,
     cnHat is optimality condition'''
 
-    # sizes of basic and nonbasic vectors
-    basicSize = A.shape[0]  # number of constraints, m
-    nonbasicSize = A.shape[1] - basicSize  # n-m, number of variables
-
-    # global index tracker of variables of basic and nonbasic variables (objective)
-    # that is, index 0 corresponds with x_0, 1 with x_1 and so on.  So each index corresponds with a variable
-    cindx = [i for i in range(0, len(c))]
-
-    # basic variable coefficients
-    cbT = np.array(c[nonbasicSize:])
-
-    # nonbasic variable coefficients
-    cnT = np.array(c[:nonbasicSize])
-
+    # # sizes of basic and nonbasic vectors
+    # basicSize = A.shape[0]  # number of constraints, m
+    # nonbasicSize = A.shape[1] - basicSize  # n-m, number of variables
+    #
+    # # global index tracker of variables of basic and nonbasic variables (objective)
+    # # that is, index 0 corresponds with x_0, 1 with x_1 and so on.  So each index corresponds with a variable
+    # cindx = [i for i in range(0, len(c))]
+    #
+    # # basic variable coefficients
+    # cbT = np.array(c[nonbasicSize:])
+    #
+    # # nonbasic variable coefficients
+    # cnT = np.array(c[:nonbasicSize])
+    cbT, cnT, cindx, nonbasicSize = init_simplex(A)
     # run core simplex method until reach the optimal solution
     return core_simplex( cindx, nonbasicSize, A, cnT, cbT)
     # while True:
