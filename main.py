@@ -45,32 +45,59 @@ def switch_indices(ratios,cnT,cbT,cindx,nonbasicSize,cnMinIndx):
     cindx[cnMinIndx], cindx[ratioMinIndx + nonbasicSize] = cindx[ratioMinIndx + nonbasicSize], cindx[cnMinIndx]
     return cnT,cbT,cindx
 
+def track_indices(cindx,nonbasicSize,A,b,cbT,cnT):
+    # keep track of current indices of basic and non-basic variables
+    cbIndx = cindx[nonbasicSize:]
+    cnIndx = cindx[:nonbasicSize]
+
+    # basis matrix
+    B = A[:, cbIndx]
+    Binv = np.linalg.inv(B)
+
+    # nonbasic variable matrix
+    N = A[:, cnIndx]
+
+    # bHat, the values of the basic variables
+    # recall that at the start the basic variables are the slack variables, and
+    # have values equal the vector b (as primary variables are set to 0 at the start)
+    bHat = Binv @ b
+    yT = cbT @ Binv
+
+    # use to check for optimality, determine variable to enter basis
+    cnHat = cnT - (yT @ N)
+
+    # find indx of minimum value of cnhat, this is the variable to enter the basis
+    cnMinIndx = np.argmin(cnHat)
+    return cnIndx,cbIndx,N,bHat,yT,cnHat,cnMinIndx,Binv
+
+
 def core_simplex(cindx,nonbasicSize,A,cnT,cbT):
     # run core simplex method until reach the optimal solution
     while True:
 
-        # keep track of current indices of basic and non-basic variables
-        cbIndx = cindx[nonbasicSize:]
-        cnIndx = cindx[:nonbasicSize]
-
-        # basis matrix
-        B = A[:, cbIndx]
-        Binv = np.linalg.inv(B)
-
-        # nonbasic variable matrix
-        N = A[:, cnIndx]
-
-        # bHat, the values of the basic variables
-        # recall that at the start the basic variables are the slack variables, and
-        # have values equal the vector b (as primary variables are set to 0 at the start)
-        bHat = Binv @ b
-        yT = cbT @ Binv
-
-        # use to check for optimality, determine variable to enter basis
-        cnHat = cnT - (yT @ N)
-
-        # find indx of minimum value of cnhat, this is the variable to enter the basis
-        cnMinIndx = np.argmin(cnHat)
+        cnIndx,cbIndx,N,bHat,yT,cnHat,cnMinIndx,Binv = track_indices(cindx, nonbasicSize, A, b, cbT, cnT)
+        # # keep track of current indices of basic and non-basic variables
+        # cbIndx = cindx[nonbasicSize:]
+        # cnIndx = cindx[:nonbasicSize]
+        #
+        # # basis matrix
+        # B = A[:, cbIndx]
+        # Binv = np.linalg.inv(B)
+        #
+        # # nonbasic variable matrix
+        # N = A[:, cnIndx]
+        #
+        # # bHat, the values of the basic variables
+        # # recall that at the start the basic variables are the slack variables, and
+        # # have values equal the vector b (as primary variables are set to 0 at the start)
+        # bHat = Binv @ b
+        # yT = cbT @ Binv
+        #
+        # # use to check for optimality, determine variable to enter basis
+        # cnHat = cnT - (yT @ N)
+        #
+        # # find indx of minimum value of cnhat, this is the variable to enter the basis
+        # cnMinIndx = np.argmin(cnHat)
 
         # break out of loop, returning values if all values of cnhat are above 0
         if (all(i >= 0 for i in cnHat)):
