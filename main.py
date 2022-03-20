@@ -79,10 +79,6 @@ def core_simplex(cindx,nonbasicSize,A,cnT,cbT):
 
         # break out of loop, returning values if all values of cnhat are above 0
         if (all(i >= 0 for i in cnHat)):
-            # use cbIndx to get index values of variables in bHat, and the corresponding index
-            # values in bHat are the final solution values for each of the corresponding variables
-            # ie value 0 in dbIndx corresponds with first variable, so whatever the index for the 0 is
-            # is the index in bHat that has the solution value for that variable.
             return cbT, cbIndx, cnT, cnIndx, bHat, cnHat
 
         # this is the index for the column of coeffs in a for the given variable
