@@ -113,19 +113,7 @@ def core_simplex(cindx,nonbasicSize,A,cnT,cbT):
         Ahat = Binv @ A[:, indx]
 
         ratios = get_non_basic_ratios(Ahat, bHat)
-        # now we want to iterate through Ahat and bHat and pick the minimum ratios
-        # only take ratios of variables with Ahat_i values greater than 0
-        # pick smallest ratio to get variable that will become nonbasic.
-        # ratios = []
-        # for i in range(0, len(bHat)):
-        #     Aval = Ahat[i]
-        #     Bval = bHat[i]
-        #
-        #     # don't look at ratios with val less then or eqaul to 0, append to keep index
-        #     if (Aval <= 0):
-        #         ratios.append(10000000)
-        #         continue
-        #     ratios.append(Bval / Aval)
+
 
         cnT,cbT,cindx = switch_indices(ratios, cnT, cbT, cindx, nonbasicSize, cnMinIndx)
 
