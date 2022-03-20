@@ -147,19 +147,6 @@ def Simplex(A, b, c):
     bHat is final solution values,
     cnHat is optimality condition'''
 
-    # # sizes of basic and nonbasic vectors
-    # basicSize = A.shape[0]  # number of constraints, m
-    # nonbasicSize = A.shape[1] - basicSize  # n-m, number of variables
-    #
-    # # global index tracker of variables of basic and nonbasic variables (objective)
-    # # that is, index 0 corresponds with x_0, 1 with x_1 and so on.  So each index corresponds with a variable
-    # cindx = [i for i in range(0, len(c))]
-    #
-    # # basic variable coefficients
-    # cbT = np.array(c[nonbasicSize:])
-    #
-    # # nonbasic variable coefficients
-    # cnT = np.array(c[:nonbasicSize])
     cbT, cnT, cindx, nonbasicSize = init_simplex(A)
     # run core simplex method until reach the optimal solution
     return core_simplex( cindx, nonbasicSize, A, cnT, cbT)
