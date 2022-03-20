@@ -36,7 +36,13 @@ def get_non_basic_ratios(Ahat,bHat):
 
     return ratios
 
-def switch_indices(ratios,cnT,cbT,cindx,nonbasicSize,cnMinIndx):
+def switch_indices(cnT,cbT,cindx,nonbasicSize,cnMinIndx,Binv,A,bHat):
+    indx = cindx[cnMinIndx]
+
+    Ahat = Binv @ A[:, indx]
+
+    ratios = get_non_basic_ratios(Ahat, bHat)
+
     ratioMinIndx = np.argmin(ratios)
 
     # switch basic and nonbasic variables using the indices.
@@ -82,14 +88,10 @@ def core_simplex(cindx,nonbasicSize,A,cnT,cbT):
             return cbT, cbIndx, cnT, cnIndx, bHat, cnHat
 
         # this is the index for the column of coeffs in a for the given variable
-        indx = cindx[cnMinIndx]
-
-        Ahat = Binv @ A[:, indx]
-
-        ratios = get_non_basic_ratios(Ahat, bHat)
 
 
-        cnT,cbT,cindx = switch_indices(ratios, cnT, cbT, cindx, nonbasicSize, cnMinIndx)
+
+        cnT,cbT,cindx = switch_indices(cnT, cbT, cindx, nonbasicSize, cnMinIndx,Binv,A,bHat)
 
 
 
