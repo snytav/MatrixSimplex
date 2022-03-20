@@ -128,13 +128,7 @@ def core_simplex(cindx,nonbasicSize,A,cnT,cbT):
         #     ratios.append(Bval / Aval)
 
         cnT,cbT,cindx = switch_indices(ratios, cnT, cbT, cindx, nonbasicSize, cnMinIndx)
-        # ratioMinIndx = np.argmin(ratios)
-        #
-        # # switch basic and nonbasic variables using the indices.
-        # cnT[cnMinIndx], cbT[ratioMinIndx] = cbT[ratioMinIndx], cnT[cnMinIndx]
-        # # switch global index tracker indices
-        # cindx[cnMinIndx], cindx[ratioMinIndx + nonbasicSize] = cindx[ratioMinIndx + nonbasicSize], cindx[cnMinIndx]
-        # # now repeat the loop
+
 
 
 
