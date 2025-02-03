@@ -58,7 +58,7 @@ def track_indices(cindx,nonbasicSize,A,b,cbT,cnT):
 
     # basis matrix
     B = A[:, cbIndx]
-    Binv = np.linalg.inv(B)
+    Binv = torch.linalg.inv(B)
 
     # nonbasic variable matrix
     N = A[:, cnIndx]
@@ -66,11 +66,11 @@ def track_indices(cindx,nonbasicSize,A,b,cbT,cnT):
     # bHat, the values of the basic variables
     # recall that at the start the basic variables are the slack variables, and
     # have values equal the vector b (as primary variables are set to 0 at the start)
-    bHat = Binv @ b
-    yT = cbT @ Binv
+    bHat = torch.matmul(Binv,b)
+    yT = torch.matmul(cbT,Binv)
 
     # use to check for optimality, determine variable to enter basis
-    cnHat = cnT - (yT @ N)
+    cnHat = cnT - torch.matmul(yT,N)
 
     # find indx of minimum value of cnhat, this is the variable to enter the basis
     cnMinIndx = np.argmin(cnHat)
