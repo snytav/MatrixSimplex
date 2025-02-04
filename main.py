@@ -2,6 +2,7 @@
 # https://in.mathworks.com/matlabcentral/fileexchange/85223-linear-programming-simplex-algorithm
 # https://gist.github.com/snytav/b6d59126610325a0b74562d09a343f3d
 import numpy as np
+import torch
 
 def init_simplex(A):
     # sizes of basic and nonbasic vectors
