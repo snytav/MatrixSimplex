@@ -59,7 +59,7 @@ def track_indices(cindx,nonbasicSize,A,b,cbT,cnT):
 
     # basis matrix
     B = A[:, cbIndx]
-    Binv = np.linalg.inv(B)
+    Binv = torch.linalg.inv(B)
 
     # nonbasic variable matrix
     N = A[:, cnIndx]
@@ -125,7 +125,7 @@ b = torch.from_numpy(np.loadtxt('b.txt'))
 c = torch.from_numpy(np.loadtxt('c.txt'))
 N = b.shape[0]
 M = c.shape[0]
-A = A.reshape(M,N)
+A = A.reshape(N,M)
 
 cbT, cbIndx, cnT, cnIndx, bHat, cnHat = Simplex(A, b, c)
 print(cbT)
