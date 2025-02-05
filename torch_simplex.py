@@ -14,7 +14,7 @@ def init_simplex(A,c):
     cindx = [i for i in range(0, len(c))]
 
     # basic variable coefficients
-    cbT = np.array(c[nonbasicSize:])
+    cbT = torch.tensor(c[nonbasicSize:])
 
     # nonbasic variable coefficients
     cnT = np.array(c[:nonbasicSize])
